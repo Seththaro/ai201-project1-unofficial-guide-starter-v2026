@@ -162,9 +162,9 @@ My in-corpus questions scored 0.248 to 0.648 and the out-of-scope questions scor
 
      Milestone 5. -->
 
-**1.** I asked Claude where to put my relevance cutoff, giving it the best distances for my questions. It pointed out that the starter's 0.6 would wrongly refuse two of my in-corpus questions (0.648 and 0.724) and suggested 0.77, inside the gap between the two groups. I changed THRESHOLD in config.py to 0.77 and re-ran run_eval.py to confirm the gate still refused 5 of 5 out-of-scope questions.
+**1.** I pasted my run_eval output into Claude and asked for suggestions. It read the distances as two groups and told me my email question was probably not covered by my corpus, even though it passed the gate at 0.724. I checked by running the question with the ask command, saw the model answer "I don't have enough information," and replaced the question with one based on course_cs_210.txt.
 
-**2.**
+**2.** I pasted my README into Claude and asked if anything was missing. It found a stray empty code block after my sample answer, a leftover empty results table above the real one, terminal noise ("1 model calls this session") in my answer, and two Sample Chunk labels with "#0" left in the source names. I deleted each of those and added the missing chunking explanation myself, then re-read the README top to bottom before submitting.
 
 <!-- ── Stretch features ─────────────────────────────────────────────────────
      Doing one? Say so here BEFORE you start. A feature this README never
