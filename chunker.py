@@ -25,6 +25,7 @@ your pipeline, not giving up.
 from dataclasses import dataclass
 
 import config
+import re
 from ingest import Document
 
 
@@ -80,25 +81,78 @@ def fallback_split(
     return chunks
 
 
+# def split_documents(documents: list[Document]) -> list[Chunk]:
+#     """
+#     Split documents into chunks. ⚠️ REPLACE THE BODY OF THIS IN MILESTONE 3.
+
+#     Right now it just calls the fallback. That is the plain, generic behaviour
+#     the brief is talking about.
+
+#     When you write your own strategy, set `produced_by` to
+#     "chunker.py::split_documents" so your README's Sample Chunks section names
+#     the right function. `app.py chunks` prints that string for you.
+
+#     Things worth thinking about before you write any code:
+#       - Are your documents short posts or long guides?
+#       - Is the useful information in one sentence, or spread over a paragraph?
+#       - Would splitting on paragraph breaks keep more thoughts intact than
+#         splitting on a character count?
+#     """
+#     return fallback_split(documents)
+
+MAX_POST_CHARS = 700  # posts up to this size stay as one chunk
+
+
+def _pack_paragraphs(title: str, paragraphs: list[str], limit: int) -> list[str]:
+    """Group paragraphs into pieces under `limit`, repeating the title on each."""
+    pieces: list[str] = []
+    current = title
+    for para in paragraphs:
+        candidate = f"{current}\n\n{para}" if current else para
+        if len(candidate) <= limit or current == title:
+            current = candidate
+        else:
+            pieces.append(current)
+            current = f"{title}\n\n{para}" if title else para
+    if current and current != title:
+        pieces.append(current)
+    return pieces
+
+
 def split_documents(documents: list[Document]) -> list[Chunk]:
     """
-    Split documents into chunks. ⚠️ REPLACE THE BODY OF THIS IN MILESTONE 3.
+    Keep each short post whole; split long posts on paragraph breaks.
 
-    Right now it just calls the fallback. That is the plain, generic behaviour
-    the brief is talking about.
-
-    When you write your own strategy, set `produced_by` to
-    "chunker.py::split_documents" so your README's Sample Chunks section names
-    the right function. `app.py chunks` prints that string for you.
-
-    Things worth thinking about before you write any code:
-      - Are your documents short posts or long guides?
-      - Is the useful information in one sentence, or spread over a paragraph?
-      - Would splitting on paragraph breaks keep more thoughts intact than
-        splitting on a character count?
+    Every post in campus_life is under 550 characters, so almost every post
+    stays one chunk. A post over MAX_POST_CHARS is split between paragraphs,
+    and its first line (the title) is repeated on every piece so a chunk
+    never loses what it is about.
     """
-    return fallback_split(documents)
+    chunks: list[Chunk] = []
+    for doc in documents:
+        text = doc.text.strip()
+        if not text:
+            continue
 
+        if len(text) <= MAX_POST_CHARS:
+            pieces = [text]
+        else:
+            lines = text.split("\n", 1)
+            title = lines[0].strip()
+            body = lines[1] if len(lines) > 1 else ""
+            paragraphs = [p.strip() for p in re.split(r"\n\s*\n", body) if p.strip()]
+            pieces = _pack_paragraphs(title, paragraphs, MAX_POST_CHARS) or [text]
+
+        for i, piece in enumerate(pieces):
+            chunks.append(
+                Chunk(
+                    text=piece,
+                    source=doc.source,
+                    index=i,
+                    produced_by="chunker.py::split_documents",
+                )
+            )
+    return chunks
 
 def describe(chunks: list[Chunk]) -> str:
     """A one-line summary, printed after indexing."""
