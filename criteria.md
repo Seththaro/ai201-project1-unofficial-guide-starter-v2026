@@ -26,6 +26,11 @@ contains the answer.
 <!-- e.g. "One of my questions is about a topic only two documents mention, so
      I expect that one to be hard." -->
 
+I picked 4 of 5 because at least one of my questions is covered by only one or
+two posts, so I expect that one to be hard to retrieve. I didn't pick 5 of 5 because
+one miss shouldn't fail the whole system, and I didn't pick 3 of 5 because that would
+let a weak retriever pass.
+
 ---
 
 ## 2. Every answer names a source
@@ -35,6 +40,11 @@ Every answer the system produces names at least one source document.
 **Why this target:**
 <!-- Why all five and not four? What about your setup makes that achievable —
      or what would have to go wrong for it not to be? -->
+
+I picked all five because the starter's grounding instruction already tells the model
+to name the source file, so a missing source would mean my prompt or code broke, not
+that the task is hard. It would only fail if the model ignores the instruction or a
+chunk reaches it without a filename.
 
 ---
 
@@ -53,6 +63,11 @@ in at least 4 of 5 tries.
 <!-- What did your distances look like when you set the cutoff in Milestone 4?
      Was there a clean gap, or did the two groups overlap? -->
 
+I picked 4 of 5 because an out-of-scope question can share a few words with my
+corpus and land close to the cutoff. My in-corpus questions had best distances
+of ___ to ___, and the out-of-scope questions had ___ to ___. [Say whether there
+was a clean gap or the groups overlapped.] I set my cutoff at ___ because ___.
+
 ---
 
 ## 4. Something about your chunks
@@ -69,11 +84,18 @@ in at least 4 of 5 tries.
        - "No chunk is shorter than 200 characters, since anything below that
           in my corpus turned out to be a heading with no content under it." -->
 
-
+For at least 4 of my 5 test questions, the top retrieved chunk answers the
+question on its own, without needing the chunk before or after it. I check
+this by reading each top chunk and asking whether someone could answer the
+question from that text alone.
 
 **Why this target:**
 
-
+I picked 4 of 5 because one question may depend on details spread
+across two posts, and I don't want one odd case to fail the whole system.
+I did not pick 5 of 5 because a single chunk that is split slightly wrong
+would then count as a total failure. I did not pick 3 of 5 because that
+would let a chunker that cuts thoughts in half pass.
 
 ---
 
@@ -87,11 +109,18 @@ in at least 4 of 5 tries.
      present — anything, as long as it names a number or an observable
      outcome. -->
 
-
+Every answer is 120 words or fewer, and every fact in it appears in the
+retrieved chunks. I check the length with a word count and the facts by
+comparing each claim to the chunk text.
 
 **Why this target:**
 
-
+I chose this because the main risk in this project is a confident
+answer that sounds right but came from the model's own knowledge. Keeping
+answers short leaves less room for extra claims, and a 120 word limit is
+long enough to give a useful answer with a source. I picked a strict rule
+of "every answer" instead of "most answers" because one made-up fact is
+enough to make a guide untrustworthy.
 
 ---
 
