@@ -25,7 +25,7 @@ QUESTIONS = [
     # {"question": "...", "expects": "..."},
     {"question": "Is the housing lottery actually random?", "expects": "lottery"},
     {"question": "What do students say about dining hall food quality?", "expects": "dining"},
-    {"question": "Which professors do students say answer email quickly?", "expects": "email"},
+    {"question": "What do students say about how CS 210 exams are based, the lecture material or the textbook?", "expects": "lecture"},
     {"question": "What do students say about laundry in the dorms?", "expects": "laundry"},
     {"question": "How do students describe getting around campus without a car?", "expects": "bus"},
 ]
