@@ -1,6 +1,6 @@
 # The Unofficial Guide
 
-<!-- Replace this line with your name and which corpus you picked. -->
+Tharo, corpus: campus_life
 
 > **This file is your submission.** Fill it in as you go — most sections get
 > written during the milestone that produces them, not at the end.
@@ -26,6 +26,8 @@
      this repo.
 
      Milestone 5. -->
+
+The Unofficial Guide answers plain-language questions about campus life, such as housing, dining, laundry, and getting around, using real student posts instead of official university pages. It loads the campus_life posts, splits them into chunks, and stores them in a vector database. When you ask a question, it retrieves the closest chunks, checks that they are close enough, and only then asks the model to answer from them and name the source file. If nothing is close enough, it says it doesn't have enough information.
 
 ## Chunking Strategy
 
@@ -84,13 +86,16 @@
      visible. Milestone 4. -->
 
 **Question:**
+How do students describe getting around campus without a car?
 
 **Answer:**
+Students can take the campus shuttle, which runs a loop every 20 minutes from 7am to 11pm on weekdays and every 40 minutes on weekends, and is free with a student ID (*transit_shuttle.txt*). Alternatively, students walk; walking times across campus include Aldridge Hall to the science quad in 4 minutes, Fenwick Court to central campus in 18 minutes, Morrow House to Kestrel Commons in 7 minutes, and the library to Ridgeway Café in 3 minutes, though four minutes should be added in winter because the path past the pond ices over (*transit_walking.txt*).
 
+Sources retrieved: admin_wifi_and_accounts.txt, housing_aldridge_hall.txt, housing_tamsin_court.txt, transit_shuttle.txt, transit_walking.txt
 ```
 ```
 
-**My relevance cutoff:**
+**My relevance cutoff: 0.77**
 
 <!-- The number you set in config.py, and how you got there.
 
@@ -105,6 +110,21 @@
 |---|---|---|
 |  |  |  |
 
+My in-corpus questions scored 0.248 to 0.648 and the out-of-scope questions scored 0.825 to 0.934, leaving a gap of about 0.18. I set the cutoff at 0.77, inside that gap and closer to the out-of-scope group, so that a real question with a weaker match is less likely to be refused. The cost is that a borderline off-topic question could slip past the gate. The grounding instruction is the second layer that catches those.
+
+| Question | In corpus? | Best distance |
+|---|---|---|
+| Is the housing lottery actually random? | Yes | 0.248 |
+| What do students say about dining hall food quality? | Yes | 0.514 |
+| What do students say about how CS 210 exams are based, the lecture material or the textbook? | Yes | 0.371 |
+| What do students say about laundry in the dorms? | Yes | 0.515 |
+| How do students describe getting around campus without a car? | Yes | 0.648 |
+| What is the capital of Mongolia? | No | 0.825 |
+| How do I change the oil in a diesel engine? | No | 0.934 |
+| Who won the 1994 World Cup? | No | 0.886 |
+| What is the recommended dosage of ibuprofen for a headache? | No | 0.844 |
+| How do I write a for loop in Rust? | No | 0.896 |
+
 ## How I Used AI
 
 <!-- Two specific moments. For each: what you asked for, what came back, and
@@ -116,7 +136,7 @@
 
      Milestone 5. -->
 
-**1.**
+**1.** I asked Claude where to put my relevance cutoff, giving it the best distances for my questions. It pointed out that the starter's 0.6 would wrongly refuse two of my in-corpus questions (0.648 and 0.724) and suggested 0.77, inside the gap between the two groups. I changed THRESHOLD in config.py to 0.77 and re-ran run_eval.py to confirm the gate still refused 5 of 5 out-of-scope questions.
 
 **2.**
 
