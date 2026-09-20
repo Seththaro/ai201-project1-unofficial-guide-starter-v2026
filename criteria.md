@@ -63,10 +63,7 @@ in at least 4 of 5 tries.
 <!-- What did your distances look like when you set the cutoff in Milestone 4?
      Was there a clean gap, or did the two groups overlap? -->
 
-I picked 4 of 5 because an out-of-scope question can share a few words with my
-corpus and land close to the cutoff. My in-corpus questions had best distances
-of ___ to ___, and the out-of-scope questions had ___ to ___. [Say whether there
-was a clean gap or the groups overlapped.] I set my cutoff at ___ because ___.
+I picked 4 of 5 because an out-of-scope question can share a few words with my corpus and land close to the cutoff. My in-corpus questions had best distances of 0.248 to 0.648, and the out-of-scope questions had 0.825 to 0.934, so there was a clean gap of about 0.18. I set my cutoff at 0.77, inside that gap. A borderline question could still get through, which is why I allowed one miss.
 
 ---
 
@@ -84,18 +81,11 @@ was a clean gap or the groups overlapped.] I set my cutoff at ___ because ___.
        - "No chunk is shorter than 200 characters, since anything below that
           in my corpus turned out to be a heading with no content under it." -->
 
-For at least 4 of my 5 test questions, the top retrieved chunk answers the
-question on its own, without needing the chunk before or after it. I check
-this by reading each top chunk and asking whether someone could answer the
-question from that text alone.
+At least 4 of the 5 chunks I sample from python app.py chunks -n 5 read as a complete thought, with no sentence cut in half at either end. I check this by reading each chunk and asking whether someone could answer a question from that text alone.
 
 **Why this target:**
 
-I picked 4 of 5 because one question may depend on details spread
-across two posts, and I don't want one odd case to fail the whole system.
-I did not pick 5 of 5 because a single chunk that is split slightly wrong
-would then count as a total failure. I did not pick 3 of 5 because that
-would let a chunker that cuts thoughts in half pass.
+I picked 4 of 5 because my corpus mixes very short posts with longer ones, so even a well-chosen chunker may leave one awkward chunk. A stricter 5 of 5 would fail on a single odd post, and 3 of 5 would let a chunker that cuts sentences in half pass.
 
 ---
 
