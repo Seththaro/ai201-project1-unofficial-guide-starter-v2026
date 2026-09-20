@@ -279,7 +279,7 @@ Rules:
 - Use only the information in the documents below. Do not use anything you know from elsewhere.
 - If the documents don't cover the question, say you don't have enough information. Do not guess.
 - Name the document your answer came from, using the filename given in each excerpt.
-- Be brief. Two or three sentences is usually enough."""
+- Be brief. Answer in 120 words or fewer."""
 
 
 def build_prompt(question: str, results) -> str:
