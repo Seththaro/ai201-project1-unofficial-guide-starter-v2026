@@ -1,6 +1,6 @@
 # The Unofficial Guide
 
-Tharo, corpus: campus_life
+Seth Tharo Hour, corpus: campus_life
 
 > **This file is your submission.** Fill it in as you go — most sections get
 > written during the milestone that produces them, not at the end.
@@ -31,8 +31,11 @@ The Unofficial Guide answers plain-language questions about campus life, such as
 
 ## Chunking Strategy
 
-**Chunk size:**
-**Overlap:**
+**Chunk size:** up to 700 characters (a post at or under 700 stays whole and longer posts are split at paragraph breaks)
+**Overlap:** none
+
+Every post in campus_life is a short, self-contained thought about one topic: the average is 317 characters and the longest is 549. The starter's 800-character windows never split anything, so I kept each post whole on purpose, because splitting would separate a fact from the title that explains it. Posts over 700 characters would be split at paragraph breaks with the title repeated on each piece, but none are that long, so that branch never ran and is untested. I use no overlap because I never cut inside a paragraph.
+
 
 <!-- What about YOUR documents made you pick these numbers? Short posts and
      long sectioned guides don't want the same chunking, and "800 seemed
@@ -55,29 +58,58 @@ The Unofficial Guide answers plain-language questions about campus life, such as
 
      Milestone 3. -->
 
-**Chunk 1** — source: `` — produced by: ``
+**Chunk 1** — source: `admin_add_drop_deadline.txt` — produced by: `chunker.py::split_documents`
 
 ```
+On the add/drop deadline
+
+You can add a course through the end of the second week. Dropping is a longer window — through the end of week six — but a drop after week two shows as a W on your transcript. Nothing anywhere on the registrar's site says this plainly, and students find out from each other.
 ```
 
-**Chunk 2** — source: `` — produced by: ``
+**Chunk 2** — source: `course_biol_160.txt` — produced by: `chunker.py::split_documents`
 
 ```
+BIOL 160 Cell Biology
+
+I lived here my sophomore year. Format is lecture three times a week with a weekly lab. Assessment: four unit tests and a cumulative final. Not curved.
+
+Expect 9 to 11 hours a week, the heaviest first-year course by reputation.
+
+The one piece of advice: the unit tests come fast, roughly every three weeks; falling behind once is very hard to recover from.
 ```
 
-**Chunk 3** — source: `` — produced by: ``
+**Chunk 3** — source: `course_hist_118_workload.txt` — produced by: `chunker.py::split_documents`
 
 ```
+Workload for HIST 118 Modern World History
+
+People keep asking so: a lot of reading, about 120 pages a week, but no problem sets. That's real time, not optimistic time.
+
+It's front-loaded — the first month is heavier than the rest, partly because you're learning the format.
 ```
 
-**Chunk 4** — source: `` — produced by: ``
+**Chunk 4** — source: `dining_pellew_dining_hall_followup.txt` — produced by: `chunker.py::split_documents`
 
 ```
+Re: Pellew Dining Hall
+
+Adding to what people have said about Pellew Dining Hall. The wait figure of 12 to 18 minutes at peak matches what I've seen. If you're trying to eat between classes, go before 11:45 and it's a different building entirely.
+
+Also worth saying: the furthest hall from anywhere, next to the athletics centre. Nobody tells you this at orientation.
 ```
 
-**Chunk 5** — source: `` — produced by: ``
+**Chunk 5** — source: `housing_innisfree_hall.txt` — produced by: `chunker.py::split_documents`
 
 ```
+Innisfree Hall — what it's actually like
+
+Transferred in last year, so take this with a grain of salt. Built 1991, renovated 2022. Rooms are doubles arranged as pairs sharing one bathroom between two rooms.
+
+The good: the shared-bathroom-between-two-rooms arrangement is the best compromise on campus.
+
+The bad: no air conditioning, which matters for the first three weeks of September.
+
+Laundry costs $1.75 wash, $1.75 dry, app-based. On noise: moderate; the building is L-shaped and the short wing is much quieter.
 ```
 
 ## Sample Answer
@@ -92,8 +124,6 @@ How do students describe getting around campus without a car?
 Students can take the campus shuttle, which runs a loop every 20 minutes from 7am to 11pm on weekdays and every 40 minutes on weekends, and is free with a student ID (*transit_shuttle.txt*). Alternatively, students walk; walking times across campus include Aldridge Hall to the science quad in 4 minutes, Fenwick Court to central campus in 18 minutes, Morrow House to Kestrel Commons in 7 minutes, and the library to Ridgeway Café in 3 minutes, though four minutes should be added in winter because the path past the pond ices over (*transit_walking.txt*).
 
 Sources retrieved: admin_wifi_and_accounts.txt, housing_aldridge_hall.txt, housing_tamsin_court.txt, transit_shuttle.txt, transit_walking.txt
-```
-```
 
 **My relevance cutoff: 0.77**
 
@@ -105,10 +135,6 @@ Sources retrieved: admin_wifi_and_accounts.txt, housing_aldridge_hall.txt, housi
      here — the table below wants all ten rows.
 
      Milestone 4. -->
-
-| Question | In corpus? | Best distance |
-|---|---|---|
-|  |  |  |
 
 My in-corpus questions scored 0.248 to 0.648 and the out-of-scope questions scored 0.825 to 0.934, leaving a gap of about 0.18. I set the cutoff at 0.77, inside that gap and closer to the out-of-scope group, so that a real question with a weaker match is less likely to be refused. The cost is that a borderline off-topic question could slip past the gate. The grounding instruction is the second layer that catches those.
 
